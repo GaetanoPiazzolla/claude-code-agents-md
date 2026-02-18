@@ -1,4 +1,4 @@
-# agents-md
+# Agents-md
 
 A Claude Code plugin that loads `agents.md` from your project root as session context — so you don't need a `CLAUDE.md` file in your codebase.
 
@@ -13,7 +13,7 @@ A Claude Code plugin that loads `agents.md` from your project root as session co
 Add the marketplace and install the plugin once, globally:
 
 ```shell
-/plugin marketplace add gae-piaz/claude-agents-md
+/plugin marketplace add GaetanoPiazzolla/claude-code-agents-md
 /plugin install agents-md@agents-md
 ```
 
@@ -45,7 +45,9 @@ No extra tokens are consumed — both hooks are plain shell scripts with no LLM 
 
 ## Caveats
 
-`additionalContext` from a hook is not identical to `CLAUDE.md` — it is injected into Claude's context window at session start rather than into the system prompt directly. In practice the behavior is very similar, but `CLAUDE.md` has slightly higher authority. For most projects this distinction does not matter.
+`additionalContext` from a hook is not identical to `CLAUDE.md` — it is injected into Claude's context window at session start.
+
+In practice the behavior is very similar, but `CLAUDE.md` has slightly higher authority.
 
 ## License
 
