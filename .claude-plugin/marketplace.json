@@ -1,0 +1,16 @@
+{
+  "name": "agents-md",
+  "owner": {
+    "name": "gae.piaz"
+  },
+  "metadata": {
+    "description": "Load agents.md as project context instead of CLAUDE.md"
+  },
+  "plugins": [
+    {
+      "name": "agents-md",
+      "source": "./",
+      "description": "Loads agents.md from the project root as session context, replacing the need for CLAUDE.md"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+# Test artifacts
+/tmp/agents-md-loaded-*
+
+# macOS
+.DS_Store
+.idea

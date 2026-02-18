@@ -1,0 +1,23 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install bats and jq
+        run: |
+          sudo apt-get install -y bats jq
+
+      - name: Make hook script executable
+        run: chmod +x hooks/load-agents-md.sh
+
+      - name: Run tests
+        run: bats tests/
