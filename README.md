@@ -19,6 +19,17 @@ Add the marketplace and install the plugin once, globally:
 
 This installs to user scope by default, meaning it applies to all your projects. No configuration needed.
 
+## Updating
+
+To update to the latest version (not needed for first install):
+
+```shell
+/plugin marketplace update agents-md
+/plugin update agents-md
+```
+
+Then restart Claude Code.
+
 ## Usage
 
 Add an `agents.md` file to the root of any project:
