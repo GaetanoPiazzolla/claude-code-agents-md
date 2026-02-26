@@ -1,3 +1,5 @@
+node_modules/
+
 # Test artifacts
 /tmp/agents-md-loaded-*
 

@@ -36,12 +36,33 @@ If a `CLAUDE.md` also exists, both are loaded — `agents.md` is injected as add
 
 Two hooks work together to mirror how Claude Code handles `CLAUDE.md` files:
 
-- **`SessionStart`**: loads `agents.md` from the project root at the start of every session
-- **`PreToolUse`** on `Read`, `Edit`, `Write`: each time Claude accesses a file, walks up from that file's directory to the project root and injects any `agents.md` found along the way — on demand, exactly once per directory per session
+- **`SessionStart`**: loads agent files from the project root at the start of every session
+- **`PreToolUse`** on `Read`, `Edit`, `Write`: each time Claude accesses a file, walks up from that file's directory to the project root and injects any agent files found along the way — on demand, exactly once per directory per session
 
-This means subdirectory `agents.md` files are loaded only when Claude actually enters that subtree, keeping context lean.
+This means subdirectory agent files are loaded only when Claude actually enters that subtree, keeping context lean.
 
-No extra tokens are consumed — both hooks are plain shell scripts with no LLM calls involved.
+No extra tokens are consumed — both hooks are plain Node.js scripts with no LLM calls.
+
+## Configuration
+
+By default the plugin looks for `agents.md` (case-insensitive). To watch additional filenames, create a `.agents-md.json` in your project root:
+
+```json
+{
+  "filenames": ["agents.md", "COPILOT-INSTRUCTIONS.md", ".github/copilot-instructions.md"]
+}
+```
+
+## Agents Tree
+
+Use the `/agents-md:agents-tree` skill to see all agent instruction files in your project:
+
+```
+.
+├── agents.md
+├── src/agents.md
+└── src/components/AGENTS.MD
+```
 
 ## Caveats
 

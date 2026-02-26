@@ -12,12 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install bats and jq
-        run: |
-          sudo apt-get install -y bats jq
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-      - name: Make hook script executable
-        run: chmod +x hooks/load-agents-md.sh
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run tests
-        run: bats tests/
+        run: npm test
