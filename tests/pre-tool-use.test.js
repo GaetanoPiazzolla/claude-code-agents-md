@@ -23,6 +23,15 @@ function makeInput(tmpDir, filePath) {
   };
 }
 
+function makeGlobInput(tmpDir, globPath) {
+  return {
+    session_id: SESSION_ID,
+    cwd: tmpDir,
+    tool_name: "Glob",
+    tool_input: { pattern: "**/*.ts", path: globPath },
+  };
+}
+
 describe("pre-tool-use", () => {
   let tmpDir;
   let loadedFile;
@@ -115,5 +124,20 @@ describe("pre-tool-use", () => {
     fs.writeFileSync(path.join(tmpDir, "src", "file.ts"), "");
     const output = JSON.parse(run(makeInput(tmpDir, path.join(tmpDir, "src", "file.ts"))));
     expect(output.hookSpecificOutput.hookEventName).toBe("PreToolUse");
+  });
+
+  test("loads agents.md when Glob is used on a subdirectory", () => {
+    fs.mkdirSync(path.join(tmpDir, "src"), { recursive: true });
+    fs.writeFileSync(path.join(tmpDir, "src", "agents.md"), "glob triggered");
+    const output = JSON.parse(run(makeGlobInput(tmpDir, path.join(tmpDir, "src"))));
+    expect(output.hookSpecificOutput.additionalContext).toContain("glob triggered");
+  });
+
+  test("loads root agents.md when Glob has no path field", () => {
+    fs.writeFileSync(path.join(tmpDir, "agents.md"), "root triggered");
+    const output = JSON.parse(
+      run({ session_id: SESSION_ID, cwd: tmpDir, tool_name: "Glob", tool_input: { pattern: "**/*.ts" } })
+    );
+    expect(output.hookSpecificOutput.additionalContext).toContain("root triggered");
   });
 });

@@ -5,14 +5,19 @@ const {
   getLoadedFilePath,
   readStdin,
   findMatchingFiles,
+  getTargetDir,
 } = require("./config");
 
 async function main() {
   const input = await readStdin();
   const { session_id, cwd } = input;
-  const filePath = (input.tool_input && input.tool_input.file_path) || "";
+  const dir = getTargetDir(
+    input.tool_name,
+    input.tool_input || {},
+    cwd
+  );
 
-  if (!filePath) {
+  if (!dir) {
     process.exit(0);
   }
 
@@ -31,14 +36,14 @@ async function main() {
   const filenames = getFilenames(cwd);
   const contextParts = [];
 
-  let dir = path.dirname(filePath);
+  let walkDir = dir;
   while (true) {
-    const relative = path.relative(cwd, dir);
+    const relative = path.relative(cwd, walkDir);
     if (relative.startsWith("..") || path.isAbsolute(relative)) {
       break;
     }
 
-    const matches = findMatchingFiles(dir, filenames);
+    const matches = findMatchingFiles(walkDir, filenames);
     for (const match of matches) {
       if (!alreadyLoaded.has(match)) {
         alreadyLoaded.add(match);
@@ -49,8 +54,8 @@ async function main() {
       }
     }
 
-    if (dir === cwd) break;
-    dir = path.dirname(dir);
+    if (walkDir === cwd) break;
+    walkDir = path.dirname(walkDir);
   }
 
   if (contextParts.length === 0) {
