@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
-const { getFilenames, getLoadedFilePath, findMatchingFiles, DEFAULT_FILENAMES } = require("../src/config");
+const { getFilenames, getLoadedFilePath, findMatchingFiles, DEFAULT_FILENAMES, getTargetDir } = require("../src/config");
 
 describe("getFilenames", () => {
   let tmpDir;
@@ -74,5 +74,39 @@ describe("findMatchingFiles", () => {
 
   test("returns empty for nonexistent directory", () => {
     expect(findMatchingFiles("/nonexistent/path", ["agents.md"])).toEqual([]);
+  });
+});
+
+describe("getTargetDir", () => {
+  const cwd = "/project";
+
+  test("Read: returns dirname of file_path", () => {
+    const result = getTargetDir("Read", { file_path: "/project/src/file.ts" }, cwd);
+    expect(result).toBe("/project/src");
+  });
+
+  test("Edit: returns dirname of file_path", () => {
+    const result = getTargetDir("Edit", { file_path: "/project/src/index.js" }, cwd);
+    expect(result).toBe("/project/src");
+  });
+
+  test("Write: returns dirname of file_path", () => {
+    const result = getTargetDir("Write", { file_path: "/project/out/new.js" }, cwd);
+    expect(result).toBe("/project/out");
+  });
+
+  test("Read: returns null when file_path is absent", () => {
+    const result = getTargetDir("Read", {}, cwd);
+    expect(result).toBeNull();
+  });
+
+  test("Glob: returns path field when present", () => {
+    const result = getTargetDir("Glob", { pattern: "**/*.ts", path: "/project/src" }, cwd);
+    expect(result).toBe("/project/src");
+  });
+
+  test("Glob: returns cwd when path field is absent", () => {
+    const result = getTargetDir("Glob", { pattern: "**/*.ts" }, cwd);
+    expect(result).toBe(cwd);
   });
 });

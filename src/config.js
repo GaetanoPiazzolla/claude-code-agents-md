@@ -58,6 +58,14 @@ function findMatchingFiles(dir, filenames) {
   return matches;
 }
 
+function getTargetDir(toolName, toolInput, cwd) {
+  if (toolName === "Glob") {
+    return toolInput.path || cwd;
+  }
+  const filePath = toolInput.file_path || "";
+  return filePath ? path.dirname(filePath) : null;
+}
+
 module.exports = {
   DEFAULT_FILENAMES,
   CONFIG_FILENAME,
@@ -65,4 +73,5 @@ module.exports = {
   getLoadedFilePath,
   readStdin,
   findMatchingFiles,
+  getTargetDir,
 };
