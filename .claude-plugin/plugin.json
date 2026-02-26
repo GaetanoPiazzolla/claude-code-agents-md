@@ -1,7 +1,7 @@
 {
   "name": "agents-md",
   "description": "Loads agents.md from the project root as session context, replacing the need for CLAUDE.md",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "gae.piaz"
   }
