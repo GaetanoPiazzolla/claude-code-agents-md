@@ -1,6 +1,6 @@
 {
   "name": "agents-md",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Claude Code plugin that loads agents.md as session context",
   "private": true,
   "scripts": {
